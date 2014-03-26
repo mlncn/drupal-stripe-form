@@ -26,11 +26,11 @@ function simpledonate_menu() {
     'page callback' => 'simpledonate_form_snippet',
   );
 
-  $items['simpledonate/thankyou'] = array(
+  $items['simpledonate/thankyou/%'] = array(
     'title' => 'Form code for adding to third-party sites.',
     'access arguments' => array('access content'),
     'page callback' => 'simpledonate_thankyou',
-    'page arguments' => array('did'),
+    'page arguments' => array(2),
     'type' => MENU_CALLBACK,
   );
 
@@ -261,8 +261,9 @@ function simpledonate_validate_form_payment($form, &$form_state) {
  * Form submission handler.
  */
 function simpledonate_form_submit($form, &$form_state) {
+  debug($form_state['values']);
   drupal_set_message('Charge successful!');
-  drupal_goto('simpledonate/thankyou', array('did' => $form_state['values']['did']));
+  drupal_goto('simpledonate/thankyou/' . $form_state['values']['did']);
 }
 
 /**
@@ -320,5 +321,15 @@ EOD;
   $output .= '<h2>Code snippet that produces it</h2>';
   $output .= '<textarea cols="400" rows="20">' . $form_html . '</textarea>';
 
+  return $output;
+}
+
+/**
+ * Display a lovely thank you.
+ */
+function simpledonate_thankyou($did = NULL) {
+  $donation = db_query("SELECT did, email, currency, amount, type, recurring, status, created FROM {simpledonate} WHERE did = :did", array(':did' => $did))->fetchAssoc();
+  debug($donation);
+  $output = 'Thanks!';
   return $output;
 }
