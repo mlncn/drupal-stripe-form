@@ -95,7 +95,7 @@ function simpledonate_form($form, &$form_state, $donate_record = array()) {
   $donate_record += simpledonate_record_defaults();
 
   // Let's make sure you have the stripe library installed.
-  if($path = libraries_get_path('stripe')) {
+  if ($path = libraries_get_path('stripe')) {
     if(!is_file($path . '/lib/Stripe.php')) {
       form_set_error('form', t('You need to install the stripe library from !link before you can use this form.', array('!link' => l('here', 'https://stripe.com/docs/libraries'))));
     }
