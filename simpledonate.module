@@ -31,11 +31,11 @@ function simpledonate_menu() {
     'access arguments' => array('access content'),
     'page callback' => 'simpledonate_thankyou',
     'page arguments' => array('did'),
+    'type' => MENU_CALLBACK,
   );
 
   return $items;
 
-  return $items;
 }
 
 /**
