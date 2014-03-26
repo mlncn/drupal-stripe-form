@@ -20,6 +20,12 @@ function simpledonate_menu() {
     'access callback' => TRUE,
   );
 
+  $items['simpledonate/form-snippet'] = array(
+    'title' => 'Form code for adding to third-party sites.',
+    'access arguments' => array('access content'),
+    'page callback' => 'simpledonate_form_snippet',
+  );
+
   return $items;
 }
 
@@ -238,4 +244,34 @@ function simpledonate_library() {
   );
 
   return $items;
+}
+
+/**
+ * Show form code for copy-pasting.
+ */
+function simpledonate_form_snippet() {
+  global $base_root;
+
+  $form_html = <<<EOD
+<form action="$base_root/simpledonate/remote" method="post">
+  <label for="email" style="display: none">E-mail address</label>
+  <input type="text" name="email" placeholder="email@example.com" style="width: 300px" />
+  <label for="currency" style="display: none">Currency</label>
+  <select name="currency" style="width: 45px">
+    <option value="dollar" selected>$</option>
+    <option value="pound">&pound;</option>
+    <option value="euro">&euro;</option>
+  </select>
+  <label for="amount" style="display: none">Amount</label>
+  <input type="text" value="50" name="amount" style="width: 220px" />
+  <input type="submit" value="Donate!" />
+</form>
+EOD;
+
+  $output = '<h2>Example (functioning) form</h2>';
+  $output .= $form_html;
+  $output .= '<h2>Code snippet that produces it</h2>';
+  $output .= '<textarea cols="400" rows="20">' . $form_html . '</textarea>';
+
+  return $output;
 }
