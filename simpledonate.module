@@ -30,13 +30,43 @@ function simpledonate_menu() {
 }
 
 /**
+ * Return array of valid currencies
+ *
+ * @return array
+ */
+function simpledonate_valid_currencies() {
+  return array(
+    'USD' => array('symbol' => '$'),
+    'EUR' => array('symbol' => '&euro;'),
+    'GBP' => array('symbol' => '&pound;'),
+  );
+}
+
+/**
+ * Return default values for a simpledonate record, used in pre-filling forms.
+ */
+function simpledonate_record_defaults() {
+  return array(
+    'email' => '',
+    'amount' => '',
+    'currency' => 'USD',
+  );
+}
+
+/**
  * Receive POST data from a third-party site.
  */
 function simpledonate_remote() {
-  $values = $_POST;
+  $values = $_POST + simpledonate_record_defaults();
   $email = check_plain($values['email']);
-  $amount = check_plain($values['amount']);
-  $currency = check_plain($values['currency']);
+  // Take donation amounts in whole number values only.
+  $amount = intval(check_plain($values['amount']));
+  $currency = strtoupper(check_plain($values['currency']));
+  // Stop invalid currencies right here and default to US dollar.
+  if (!array_key_exists($currency, simpledonate_valid_currencies())) {
+    $currency = 'USD';
+  }
+
   $record = array(
     'email' => $email,
     'amount' => $amount,
@@ -52,12 +82,7 @@ function simpledonate_remote() {
  * Sample Stripe Form.
  */
 function simpledonate_form($form, &$form_state, $donate_record = array()) {
-  $donate_record_defaults = array(
-    'email' => '',
-    'amount' => '',
-    'currency' => 'dollar',
-  );
-  $donate_record += $donate_record_defaults;
+  $donate_record += $simpledonate_record_defaults();
 
   // Let's make sure you have the stripe library installed.
   if($path = libraries_get_path('stripe')) {
