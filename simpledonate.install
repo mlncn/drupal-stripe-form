@@ -1,0 +1,68 @@
+<?php
+
+function simpledonate_schema() {
+  $schema['simpledonate'] = array(
+
+    'description' => 'Donation attempts and donations.',
+    'fields' => array(
+      'did' => array(
+        'description' => 'Donation ID.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'email' => array(
+        'description' => 'Donor e-mail address.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'currency' => array(
+        'description' => 'Currency type.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'amount' => array(
+        'description' => 'Donation amount.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'type' => array(
+        'description' => 'The donation type.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'interval' => array(
+        'description' => 'Recurring donation interval.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'status' => array(
+        'description' => '0 for not complete, 1 for complete, 2 for ignored.',
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'created' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0
+      ),
+    ),
+    'indexes' => array(
+      'simpledonate_email' => array('email'),
+      'simpledonate_status' => array('status'),
+    ),
+    'primary key' => array('did'),
+  );
+  return $schema;
+}
