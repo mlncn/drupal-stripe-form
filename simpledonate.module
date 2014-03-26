@@ -329,7 +329,8 @@ EOD;
  */
 function simpledonate_thankyou($did = NULL) {
   $donation = db_query("SELECT did, email, currency, amount, type, recurring, status, created FROM {simpledonate} WHERE did = :did", array(':did' => $did))->fetchAssoc();
-  debug($donation);
-  $output = 'Thanks!';
+  $valid_currencies = simpledonate_valid_currencies();
+  $symbol = $valid_currencies[$donation['currency']]['symbol'];
+  $output = 'Thank you for your generous donation of ' . $symbol . $donation['amount'] . '!';
   return $output;
 }
