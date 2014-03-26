@@ -38,7 +38,7 @@ function simpledonate_schema() {
         'not null' => TRUE,
         'default' => '',
       ),
-      'interval' => array(
+      'recurring' => array(
         'description' => 'Recurring donation interval.',
         'type' => 'varchar',
         'length' => 32,
