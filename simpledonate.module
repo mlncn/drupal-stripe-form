@@ -14,9 +14,15 @@ function simpledonate_menu() {
   );
 
   $items['simpledonate/form'] = array(
-    'title' => 'Stripe Form',
+    'title' => 'Donate!',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('simpledonate_form'),
+    'access callback' => TRUE,
+  );
+  $items['simpledonate/form/%'] = array(
+    'title' => 'Donate!',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('simpledonate_form', 2),
     'access callback' => TRUE,
   );
 
@@ -84,19 +90,20 @@ function simpledonate_remote() {
     'created' => time(),
   );
   drupal_write_record('simpledonate', $record);
-  $output = drupal_get_form('simpledonate_form', $record);
-  return $output;
+
+  drupal_goto('simpledonate/form/' . $record['did']);
 }
 
 /**
- * Sample Stripe Form.
+ * Simple donation form.
  */
-function simpledonate_form($form, &$form_state, $donate_record = array()) {
-  $donate_record += simpledonate_record_defaults();
+function simpledonate_form($form, &$form_state, $did = NULL) {
+  $donate_record = simpledonate_load($did);
+  $donate_record = $donate_record ? $donate_record : simpledonate_record_defaults();
 
   // Let's make sure you have the stripe library installed.
   if ($path = libraries_get_path('stripe')) {
-    if(!is_file($path . '/lib/Stripe.php')) {
+    if (!is_file($path . '/lib/Stripe.php')) {
       form_set_error('form', t('You need to install the stripe library from !link before you can use this form.', array('!link' => l('here', 'https://stripe.com/docs/libraries'))));
     }
   } else {
@@ -261,7 +268,6 @@ function simpledonate_validate_form_payment($form, &$form_state) {
  * Form submission handler.
  */
 function simpledonate_form_submit($form, &$form_state) {
-  debug($form_state['values']);
   drupal_set_message('Charge successful!');
   drupal_goto('simpledonate/thankyou/' . $form_state['values']['did']);
 }
@@ -328,9 +334,16 @@ EOD;
  * Display a lovely thank you.
  */
 function simpledonate_thankyou($did = NULL) {
-  $donation = db_query("SELECT did, email, currency, amount, type, recurring, status, created FROM {simpledonate} WHERE did = :did", array(':did' => $did))->fetchAssoc();
+  $donation = simpledonate_load($did);
   $valid_currencies = simpledonate_valid_currencies();
   $symbol = $valid_currencies[$donation['currency']]['symbol'];
   $output = 'Thank you for your generous donation of ' . $symbol . $donation['amount'] . '!';
   return $output;
+}
+
+/**
+ * Load donation record by donation ID.
+ */
+function simpledonate_load($did) {
+  return db_query("SELECT did, email, currency, amount, type, recurring, status, created FROM {simpledonate} WHERE did = :did", array(':did' => $did))->fetchAssoc();
 }
