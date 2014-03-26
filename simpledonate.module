@@ -34,7 +34,6 @@ function simpledonate_menu() {
  */
 function simpledonate_remote() {
   $values = $_POST;
-  debug($values);
   $email = check_plain($values['email']);
   $amount = check_plain($values['amount']);
   $currency = check_plain($values['currency']);
@@ -53,6 +52,12 @@ function simpledonate_remote() {
  * Sample Stripe Form.
  */
 function simpledonate_form($form, &$form_state, $donate_record = array()) {
+  $donate_record_defaults = array(
+    'email' => '',
+    'amount' => '',
+    'currency' => 'dollar',
+  );
+  $donate_record += $donate_record_defaults;
 
   // Let's make sure you have the stripe library installed.
   if($path = libraries_get_path('stripe')) {
@@ -86,6 +91,7 @@ function simpledonate_form($form, &$form_state, $donate_record = array()) {
   $form['amount'] = array(
     '#type' => 'textfield',
     '#title' => t('Amount to charge'),
+    '#default_value' => $donate_record['amount'],
     '#description' => t('NOTE: Normally, you would calculate amount on the back end unless the user really can choose their own amount'),
     '#size' => 6,
     '#required' => TRUE,
@@ -147,7 +153,7 @@ function simpledonate_form($form, &$form_state, $donate_record = array()) {
 
   $cc['submit'] = array(
     '#type' => 'submit',
-    '#value' => t('Charge It'),
+    '#value' => t('Process donation'),
     '#attributes' => array(
       'class' => array('btn', 'btn-large', 'btn-primary'),
     ),
@@ -183,7 +189,7 @@ function simpledonate_checkout_form_validate($form, &$form_state) {
  * to the submission callback.
  */
 function simpledonate_validate_form_payment($form, &$form_state) {
-  if($errors = form_get_errors()) {
+  if ($errors = form_get_errors()) {
     return;
   }
   $path = libraries_get_path('stripe');
@@ -200,7 +206,7 @@ function simpledonate_validate_form_payment($form, &$form_state) {
       "amount" => $amount,
       "currency" => "usd",
       "card" => $token,
-      "description" => 'test charge',
+      "description" => 'Donation to Friends of Foster Care India',
     ));
 
     $form_state['stripeform_charge'] = $charge;
