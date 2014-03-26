@@ -1,14 +1,19 @@
 <?php
 
-define('STRIPEFORM_PRIVATE_KEY', '');
-
 /**
  * Implements hook_menu().
  */
 function simpledonate_menu() {
   $items = array();
 
-  $items['stripeform'] = array(
+  $items['simpledonate/remote'] = array(
+    'title' => 'Catch post data',
+    'access arguments' => array('access content'),
+    'page callback' => 'simpledonate_remote',
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['simpledonate/form'] = array(
     'title' => 'Stripe Form',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('simpledonate_form'),
@@ -19,9 +24,29 @@ function simpledonate_menu() {
 }
 
 /**
+ * Receive POST data from a third-party site.
+ */
+function simpledonate_remote() {
+  $values = $_POST;
+  debug($values);
+  $email = check_plain($values['email']);
+  $amount = check_plain($values['amount']);
+  $currency = check_plain($values['currency']);
+  $record = array(
+    'email' => $email,
+    'amount' => $amount,
+    'currency' => $currency,
+    'created' => time(),
+  );
+  drupal_write_record('simpledonate', $record);
+  $output = drupal_get_form('simpledonate_form', $record);
+  return $output;
+}
+
+/**
  * Sample Stripe Form.
  */
-function simpledonate_form($form, &$form_state) {
+function simpledonate_form($form, &$form_state, $donate_record = array()) {
 
   // Let's make sure you have the stripe library installed.
   if($path = libraries_get_path('stripe')) {
