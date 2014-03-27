@@ -33,7 +33,7 @@ function simpledonate_menu() {
   );
 
   $items['simpledonate/thankyou/%'] = array(
-    'title' => 'Form code for adding to third-party sites.',
+    'title' => 'Thank you for your donation!',
     'access arguments' => array('access content'),
     'page callback' => 'simpledonate_thankyou',
     'page arguments' => array(2),
