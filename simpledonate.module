@@ -40,6 +40,15 @@ function simpledonate_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  $items['admin/config/services/simpledonate'] = array(
+    'title' => 'Simple donations with Stripe',
+    'description' => 'Configure <a href="https://stripe.com/" target="_blank">Stripe</a> donations.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('simpledonate_admin_settings_form'),
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'includes/simpledonate.admin.inc',
+  );
   return $items;
 
 }
