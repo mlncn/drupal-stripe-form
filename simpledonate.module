@@ -110,6 +110,7 @@ function simpledonate_form($form, &$form_state, $did = NULL) {
   $donate_record = simpledonate_load($did);
   $donate_record = $donate_record ? $donate_record : simpledonate_record_defaults();
 
+  // TODO: Move to helper function?  See if form_set_error makes any sense here?
   // Let's make sure you have the stripe library installed.
   if ($path = libraries_get_path('stripe')) {
     if (!is_file($path . '/lib/Stripe.php')) {
@@ -278,7 +279,14 @@ function simpledonate_validate_form_payment($form, &$form_state) {
  */
 function simpledonate_form_submit($form, &$form_state) {
   drupal_set_message('Charge successful!');
-  drupal_goto('simpledonate/thankyou/' . $form_state['values']['did']);
+  $did = $form_state['values']['did'];
+  $donate_record = simpledonate_load($did);
+  $donate_record = $donate_record ? $donate_record : simpledonate_record_defaults();
+  $donate_record['amount'] = $form_state['values']['amount'];
+  // TODO add all other values that may be changed on this page.
+  drupal_write_record('simpledonate', $donate_record);
+
+  drupal_goto('simpledonate/thankyou/' . $donate_record['did']);
 }
 
 /**
