@@ -317,16 +317,20 @@ function simpledonate_library() {
  */
 function simpledonate_form_snippet() {
   global $base_root;
+  $options = '';
+  foreach (simpledonate_valid_currencies() as $key => $info) {
+    $symbol = $info['symbol'];
+    $selected = ($key == 'USD') ? ' selected' : '';
+    $options .= "\n    ";
+    $options .= '<option value="' . $key . '"' . $selected . '>' . $symbol . '</option>';
+  }
 
   $form_html = <<<EOD
 <form action="$base_root/simpledonate/remote" method="post">
   <label for="email" style="display: none">E-mail address</label>
   <input type="text" name="email" placeholder="email@example.com" style="width: 300px" />
   <label for="currency" style="display: none">Currency</label>
-  <select name="currency" style="width: 45px">
-    <option value="dollar" selected>$</option>
-    <option value="pound">&pound;</option>
-    <option value="euro">&euro;</option>
+  <select name="currency" style="width: 45px">$options
   </select>
   <label for="amount" style="display: none">Amount</label>
   <input type="text" value="50" name="amount" style="width: 220px" />
