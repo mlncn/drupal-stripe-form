@@ -167,7 +167,7 @@ function simpledonate_form($form, &$form_state, $did = NULL) {
   $cc['exp_month'] = array(
     '#type' => 'select',
     '#title' => t('Expiration Month'),
-    '#options' => drupal_map_assoc(array(1,2,3,4,5,6,7,8,9,10,11,12)),
+    '#options' => simpledonate_get_month_options(),
     '#pre_render' => array('simpledonate_remove_name'),
     '#attributes' => array(
       'data-stripe' => 'exp-month',
@@ -370,4 +370,18 @@ function simpledonate_standardize_currency($currency) {
     $currency = 'USD';
   }
   return $currency;
+}
+
+/**
+ * Return an array of months keyed by number.
+ */
+function simpledonate_get_month_options() {
+  return drupal_map_assoc(
+    array(1,2,3,4,5,6,7,8,9,10,11,12),
+    '_simpledonate_convert_number_to_month'
+  );
+}
+
+function _simpledonate_convert_number_to_month($month_number) {
+  return date("F", mktime(0, 0, 0, $month_number, 10));
 }
