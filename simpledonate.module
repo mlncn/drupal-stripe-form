@@ -83,15 +83,12 @@ function simpledonate_record_defaults() {
  */
 function simpledonate_remote() {
   $values = $_POST + simpledonate_record_defaults();
-  $email = check_plain($values['email']);
-  // Take donation amounts in whole number values only.
-  $amount = intval(check_plain($values['amount']));
-  $currency = simpledonate_standardize_currency($values['currency']);
 
   $record = array(
-    'email' => $email,
-    'amount' => $amount,
-    'currency' => $currency,
+    'email' => check_plain($values['email']),
+    // Take donation amounts in whole number values only.
+    'amount' => intval(check_plain($values['amount'])),
+    'currency' => simpledonate_standardize_currency($values['currency']),
     'created' => time(),
   );
   drupal_write_record('simpledonate', $record);
