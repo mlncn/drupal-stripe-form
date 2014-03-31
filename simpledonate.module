@@ -40,6 +40,12 @@ function simpledonate_menu() {
     'type' => MENU_CALLBACK,
   );
 
+  $items['simpledonate/donors'] = array(
+    'title' => 'Donors and attempted donors.',
+    'access arguments' => array('administer site configuration'),
+    'page callback' => 'simpledonate_donors',
+  );
+
   $items['admin/config/services/simpledonate'] = array(
     'title' => 'Simple donations with Stripe',
     'description' => 'Configure <a href="https://stripe.com/" target="_blank">Stripe</a> donations.',
@@ -328,7 +334,7 @@ function simpledonate_form_snippet() {
   $form_html = <<<EOD
 <form action="$base_root/simpledonate/remote" method="post">
   <label for="email" style="display: none">E-mail address</label>
-  <input type="text" name="email" placeholder="email@example.com" style="width: 300px" />
+  <input type="text" name="email" placeholder="your@email.here" style="width: 300px" />
   <label for="currency" style="display: none">Currency</label>
   <select name="currency" style="width: 45px">$options
   </select>
@@ -347,6 +353,39 @@ EOD;
 }
 
 /**
+ * Show authorized administrators information on who has tried to donate.
+ */
+function simpledonate_donors() {
+  $data = simpledonate_load_multiple();
+  $header = array(
+    'email' => t('E-mail address'),
+    'amount' => t('Offered donation'),
+    'recurring' => t('Recurring'),
+    'type' => t('Type'),
+    'created' => t('Created'),
+  );
+  $donors = array();
+  $currencies = simpledonate_valid_currencies();
+  foreach ($data as $donor) {
+    $donors[] = array(
+      'email' => $donor['email'],
+      'amount' => $donor['amount'],
+      'recurring' => $donor['recurring'],
+      'type' => $donor['type'],
+      'created' => $donor['created'],
+    );
+  }
+
+  $page = array();
+  $page['donors'] = array(
+    '#theme' => 'table',
+    '#header' => $header,
+    '#rows' => $donors,
+  );
+  return $page;
+}
+
+/**
  * Display a lovely thank you.
  */
 function simpledonate_thankyou($did = NULL) {
@@ -362,6 +401,13 @@ function simpledonate_thankyou($did = NULL) {
  */
 function simpledonate_load($did) {
   return db_query("SELECT did, email, currency, amount, type, recurring, status, created FROM {simpledonate} WHERE did = :did", array(':did' => $did))->fetchAssoc();
+}
+
+/**
+ * Load donation records.
+ */
+function simpledonate_load_multiple() {
+  return db_query("SELECT did, email, currency, amount, type, recurring, status, created FROM {simpledonate}")->fetchAllAssoc('did', PDO::FETCH_ASSOC);
 }
 
 /**
