@@ -86,11 +86,7 @@ function simpledonate_remote() {
   $email = check_plain($values['email']);
   // Take donation amounts in whole number values only.
   $amount = intval(check_plain($values['amount']));
-  $currency = strtoupper(check_plain($values['currency']));
-  // Stop invalid currencies right here and default to US dollar.
-  if (!array_key_exists($currency, simpledonate_valid_currencies())) {
-    $currency = 'USD';
-  }
+  $currency = simpledonate_standardize_currency($values['currency']);
 
   $record = array(
     'email' => $email,
@@ -363,4 +359,16 @@ function simpledonate_thankyou($did = NULL) {
  */
 function simpledonate_load($did) {
   return db_query("SELECT did, email, currency, amount, type, recurring, status, created FROM {simpledonate} WHERE did = :did", array(':did' => $did))->fetchAssoc();
+}
+
+/**
+ * Make currency uppercase and force to allowed currency (default to USD).
+ */
+function simpledonate_standardize_currency($currency) {
+  $currency = strtoupper(check_plain($currency));
+  // Stop invalid currencies right here and default to US dollar.
+  if (!array_key_exists($currency, simpledonate_valid_currencies())) {
+    $currency = 'USD';
+  }
+  return $currency;
 }
