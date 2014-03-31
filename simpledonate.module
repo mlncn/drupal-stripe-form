@@ -140,9 +140,9 @@ function simpledonate_form($form, &$form_state, $did = NULL) {
 
   $form['amount'] = array(
     '#type' => 'textfield',
-    '#title' => t('Amount to charge'),
+    '#title' => t('Amount'),
     '#default_value' => $donate_record['amount'],
-    '#description' => t('NOTE: Normally, you would calculate amount on the back end unless the user really can choose their own amount'),
+    '#description' => t('How much you can donate.'),
     '#size' => 6,
     '#required' => TRUE,
   );
