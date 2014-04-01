@@ -410,8 +410,16 @@ function simpledonate_load($did) {
 /**
  * Load donation records.
  */
-function simpledonate_load_multiple() {
-  return db_query("SELECT did, email, currency, amount, type, recurring, status, created FROM {simpledonate}")->fetchAllAssoc('did', PDO::FETCH_ASSOC);
+function simpledonate_load_multiple($type = NULL) {
+  $sql = "SELECT did, email, currency, amount, type, recurring, status, created FROM {simpledonate}";
+  if ($type !== NULL && is_integer($type)) {
+    $sql .= " WHERE type = " . $type;
+  }
+  elseif ($type === SIMPLEDONATE_COMPLETE) {
+
+    $sql .=
+  }
+  return db_query($sql)->fetchAllAssoc('did', PDO::FETCH_ASSOC);
 }
 
 /**
