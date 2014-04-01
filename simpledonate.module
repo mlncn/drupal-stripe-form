@@ -372,7 +372,7 @@ function simpledonate_donors() {
       'amount' => $currencies[$donor['currency']]['symbol'] . $donor['amount'],
       'recurring' => $donor['recurring'],
       'type' => $donor['type'],
-      'created' => $donor['created'],
+      'created' => format_date($donor['created']),
     );
   }
 
