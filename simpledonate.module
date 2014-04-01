@@ -50,6 +50,22 @@ function simpledonate_menu() {
     'page callback' => 'simpledonate_donors',
   );
 
+  $items['simpledonate/donors/incomplete'] = array(
+    'title' => 'Incomplete',
+    'access arguments' => array('administer site configuration'),
+    'page callback' => 'simpledonate_donors',
+    'page arguments' => array(SIMPLEDONATE_INCOMPLETE),
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+  );
+
+  $items['simpledonate/donors/complete'] = array(
+    'title' => 'Complete',
+    'access arguments' => array('administer site configuration'),
+    'page callback' => 'simpledonate_donors',
+    'page arguments' => array(SIMPLEDONATE_COMPLETE),
+    'type' => MENU_LOCAL_TASK,
+  );
+
   $items['admin/config/services/simpledonate'] = array(
     'title' => 'Simple donations with Stripe',
     'description' => 'Configure <a href="https://stripe.com/" target="_blank">Stripe</a> donations.',
