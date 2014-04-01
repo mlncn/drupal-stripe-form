@@ -1,5 +1,9 @@
 <?php
 
+define('SIMPLEDONATE_INCOMPLETE', 0);
+define('SIMPLEDONATE_COMPLETE', 1);
+define('SIMPLEDONATE_ABANDONED', 2);
+
 /**
  * Implements hook_menu().
  */
