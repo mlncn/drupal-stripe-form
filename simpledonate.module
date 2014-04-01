@@ -359,8 +359,8 @@ EOD;
 /**
  * Show authorized administrators information on who has tried to donate.
  */
-function simpledonate_donors() {
-  $data = simpledonate_load_multiple();
+function simpledonate_donors($type = SIMPLEDONATE_INCOMPLETE) {
+  $data = simpledonate_load_multiple($type);
   $header = array(
     'email' => t('E-mail address'),
     'amount' => t('Offered donation'),
