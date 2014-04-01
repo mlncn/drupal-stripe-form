@@ -59,8 +59,8 @@ function simpledonate_menu() {
     'type' => MENU_NORMAL_ITEM,
     'file' => 'includes/simpledonate.admin.inc',
   );
-  return $items;
 
+  return $items;
 }
 
 /**
