@@ -369,7 +369,7 @@ function simpledonate_donors() {
   foreach ($data as $donor) {
     $donors[] = array(
       'email' => $donor['email'],
-      'amount' => $donor['amount'],
+      'amount' => $currencies[$donor['currency']]['symbol'] . $donor['amount'],
       'recurring' => $donor['recurring'],
       'type' => $donor['type'],
       'created' => $donor['created'],
