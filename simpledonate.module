@@ -62,7 +62,7 @@ function simpledonate_menu() {
     'title' => 'Complete',
     'access arguments' => array('administer site configuration'),
     'page callback' => 'simpledonate_donors',
-    'page arguments' => array(SIMPLEDONATE_COMPLETE),
+    'page arguments' => array("" . SIMPLEDONATE_COMPLETE . ""),
     'type' => MENU_LOCAL_TASK,
   );
 
@@ -430,10 +430,6 @@ function simpledonate_load_multiple($type = NULL) {
   $sql = "SELECT did, email, currency, amount, type, recurring, status, created FROM {simpledonate}";
   if ($type !== NULL && is_integer($type)) {
     $sql .= " WHERE type = " . $type;
-  }
-  elseif ($type === SIMPLEDONATE_COMPLETE) {
-
-    $sql .=
   }
   return db_query($sql)->fetchAllAssoc('did', PDO::FETCH_ASSOC);
 }
