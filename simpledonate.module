@@ -428,7 +428,7 @@ function simpledonate_load($did) {
  */
 function simpledonate_load_multiple($type = NULL) {
   $sql = "SELECT did, email, currency, amount, type, recurring, status, created FROM {simpledonate}";
-  if ($type !== NULL && is_integer($type)) {
+  if ($type !== NULL && is_numeric($type)) {
     $sql .= " WHERE type = " . $type;
   }
   return db_query($sql)->fetchAllAssoc('did', PDO::FETCH_ASSOC);
