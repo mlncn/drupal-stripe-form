@@ -382,8 +382,14 @@ function simpledonate_form_submit($form, &$form_state) {
   $donate_record = simpledonate_load($did);
   $donate_record = $donate_record ? $donate_record : simpledonate_record_defaults();
   $donate_record['amount'] = $form_state['values']['amount'];
-  // TODO add all other values that may be changed on this page.
-  $donate_record['status'] = 1;
+  $donate_record['currency'] = $form_state['values']['currency'];
+  $donate_record['email'] = $form_state['values']['email'];
+  $donate_record['first_name'] = $form_state['values']['first_name'];
+  $donate_record['last_name'] = $form_state['values']['last_name'];
+  $donate_record['address'] = $form_state['values']['address'];
+  $donate_record['city'] = $form_state['values']['city'];
+  $donate_record['postal_code'] = $form_state['values']['postal_code'];
+  $donate_record['status'] = SIMPLEDONATE_COMPLETE;
   drupal_write_record('simpledonate', $donate_record);
 
   drupal_goto('simpledonate/thankyou/' . $donate_record['did']);
