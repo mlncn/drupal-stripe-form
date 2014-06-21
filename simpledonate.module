@@ -304,19 +304,9 @@ function simpledonate_form($form, &$form_state, $did = NULL) {
     ),
   );
 
-  $form['actions']['submit']['#ajax'] = array(
-    'callback' => 'simpledonate_form_ajax_callback',
-    'wrapper' => 'simpledonate-form',
-    'method' => 'replace',
-    'effect' => 'fade',
-  );
   // Adds our validation at the end of the build process.
   // Stripe skips this: $form['#after_build'][] = 'simpledonate_add_final_validation';
 
-  return $form;
-}
-
-function simpledonate_form_ajax_callback($form, &$form_state) {
   return $form;
 }
 
