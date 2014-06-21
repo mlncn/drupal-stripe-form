@@ -380,7 +380,7 @@ function simpledonate_form_submit($form, &$form_state) {
   $donate_record['city'] = $form_state['values']['city'];
   $donate_record['postal_code'] = $form_state['values']['postal_code'];
   $donate_record['status'] = SIMPLEDONATE_COMPLETE;
-  // If we had a valid donation ID, update the record.  Otherwise bail.
+  // If we had a valid donation ID, update the record.  Otherwise insert new.
   if ($donate_record['did']) {
     drupal_write_record('simpledonate', $donate_record, 'did');
   }
