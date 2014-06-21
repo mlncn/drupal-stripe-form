@@ -247,6 +247,8 @@ function simpledonate_form($form, &$form_state, $did = NULL) {
 
   $cc = &$form['credit_card'];
 
+  $cc['errors'] = array('#markup' => '<div class="payment-errors"></div>');
+
   $cc['card_number'] = array(
     '#type' => 'textfield',
     '#title' => t('Credit Card Number'),
