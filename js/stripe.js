@@ -33,6 +33,10 @@
           });
           $obj.parents('div.control-group').toggleClass('error');
           reportError(err, $obj);
+          // Show the errors on the form
+          $form.find('.payment-errors').text(err);
+          $form.find('.payment-errors').addClass('alert alert-block alert-danger');
+          // $submitBtn.attr('disabled', false);
           return false;
         }
         $submitBtn.val('Please wait...').attr('disabled', true);
