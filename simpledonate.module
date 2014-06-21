@@ -510,14 +510,14 @@ function simpledonate_thankyou($did = NULL) {
  * Load donation record by donation ID.
  */
 function simpledonate_load($did) {
-  return db_query("SELECT did, email, currency, amount, type, recurring, status, created FROM {simpledonate} WHERE did = :did", array(':did' => $did))->fetchAssoc();
+  return db_query("SELECT did, email, first_name, last_name, address, city, postal_code, currency, amount, type, recurring, status, created FROM {simpledonate} WHERE did = :did", array(':did' => $did))->fetchAssoc();
 }
 
 /**
  * Load donation records.
  */
 function simpledonate_load_multiple($type = NULL) {
-  $sql = "SELECT did, email, currency, amount, type, recurring, status, created FROM {simpledonate}";
+  $sql = "SELECT did, email, first_name, last_name, address, city, postal_code, currency, amount, type, recurring, status, created FROM {simpledonate}";
   if ($type !== NULL && is_numeric($type)) {
     $sql .= " WHERE type = " . $type;
   }
