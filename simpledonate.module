@@ -194,6 +194,52 @@ function simpledonate_form($form, &$form_state, $did = NULL) {
     '#required' => TRUE,
   );
 
+  $form['email'] = array(
+    '#type' => 'textfield',
+    '#title' => t('E-mail'),
+    '#default_value' => $donate_record['email'],
+    '#size' => 36,
+    '#required' => TRUE,
+  );
+
+  $form['first_name'] = array(
+    '#type' => 'textfield',
+    '#title' => t('First name'),
+    '#default_value' => $donate_record['first_name'],
+    '#size' => 36,
+    '#required' => TRUE,
+  );
+
+  $form['last_name'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Last name'),
+    '#default_value' => $donate_record['last_name'],
+    '#size' => 36,
+    '#required' => TRUE,
+  );
+
+  $form['address'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Address'),
+    '#default_value' => $donate_record['address'],
+    '#size' => 36,
+  );
+
+  $form['city'] = array(
+    '#type' => 'textfield',
+    '#title' => t('City'),
+    '#default_value' => $donate_record['city'],
+    '#size' => 36,
+  );
+
+  $form['postal_code'] = array(
+    '#type' => 'textfield',
+    '#title' => t('ZIP/Postal code'),
+    '#default_value' => $donate_record['postal_code'],
+    '#size' => 10,
+    '#required' => FALSE,
+  );
+
   $form['credit_card'] = array(
     '#type' => 'fieldset',
     '#title' => t('Credit Card Information'),
