@@ -101,6 +101,11 @@ function simpledonate_record_defaults() {
     'email' => '',
     'amount' => '',
     'currency' => 'USD',
+    'first_name' => '',
+    'last_name' => '',
+    'address' => '',
+    'city' => '',
+    'postal_code' => '',
   );
 }
 
