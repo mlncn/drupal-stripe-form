@@ -164,6 +164,22 @@ function simpledonate_form($form, &$form_state, $did = NULL) {
     '#value' => $donate_record['did'],
   );
 
+  $options = array();
+  foreach (simpledonate_valid_currencies() as $key => $info) {
+    $symbol = $info['symbol'];
+    // Decode entities to work around something annoying core does.
+    // This is how core works aronud itself: https://drupal.org/node/1919338
+    $options[$key] = decode_entities($symbol);
+  }
+
+  $form['currency'] = array(
+    '#type' => 'select',
+    '#title' => t('Currency'),
+    '#options' => $options,
+    '#default_value' => $donate_record['currency'],
+    '#required' => TRUE,
+  );
+
   $form['amount'] = array(
     '#type' => 'textfield',
     '#title' => t('Amount'),
