@@ -440,8 +440,9 @@ function simpledonate_form_snippet() {
 <form action="$base_root/simpledonate/remote" method="post">
   <label for="email" style="display: none">E-mail address</label>
   <input type="text" name="email" placeholder="your@email.here" style="width: 300px" />
+  <input type="text" name="name" placeholder="Your Name" style="width: 300px" />
   <label for="currency" style="display: none">Currency</label>
-  <select name="currency" style="width: 45px">$options
+  <select name="currency" style="width: 48px">$options
   </select>
   <label for="amount" style="display: none">Amount</label>
   <input type="text" value="50" name="amount" style="width: 220px" />
