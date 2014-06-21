@@ -390,8 +390,13 @@ function simpledonate_form_submit($form, &$form_state) {
   $donate_record['city'] = $form_state['values']['city'];
   $donate_record['postal_code'] = $form_state['values']['postal_code'];
   $donate_record['status'] = SIMPLEDONATE_COMPLETE;
-  drupal_write_record('simpledonate', $donate_record);
-
+  // If we had a valid donation ID, update the record.  Otherwise bail.
+  if ($donate_record['did']) {
+    drupal_write_record('simpledonate', $donate_record, 'did');
+  }
+  else {
+    drupal_write_record('simpledonate', $donate_record);
+  }
   drupal_goto('simpledonate/thankyou/' . $donate_record['did']);
 }
 
