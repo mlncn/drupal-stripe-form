@@ -101,3 +101,16 @@ function simpledonate_schema() {
   );
   return $schema;
 }
+
+
+/**
+ * Implement hook_update().
+ */
+function simpledonate_update_7000() {
+  $schema = simpledonate_schema();
+  db_add_field('simpledonate', 'first_name', $schema['simpledonate']['fields']['first_name']);
+  db_add_field('simpledonate', 'last_name', $schema['simpledonate']['fields']['last_name']);
+  db_add_field('simpledonate', 'address', $schema['simpledonate']['fields']['address']);
+  db_add_field('simpledonate', 'city', $schema['simpledonate']['fields']['city']);
+  db_add_field('simpledonate', 'postal_code', $schema['simpledonate']['fields']['postal_code']);
+}
