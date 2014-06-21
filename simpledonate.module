@@ -377,7 +377,7 @@ function simpledonate_validate_form_payment($form, &$form_state) {
  * Form submission handler.
  */
 function simpledonate_form_submit($form, &$form_state) {
-  drupal_set_message('Charge successful!');
+  drupal_set_message('Your payment is being processed.');
   $did = $form_state['values']['did'];
   $donate_record = simpledonate_load($did);
   $donate_record = $donate_record ? $donate_record : simpledonate_record_defaults();
