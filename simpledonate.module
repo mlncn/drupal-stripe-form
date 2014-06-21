@@ -464,20 +464,24 @@ EOD;
 function simpledonate_donors($type = SIMPLEDONATE_INCOMPLETE) {
   $data = simpledonate_load_multiple($type);
   $header = array(
+    'name' => t('Name'),
     'email' => t('E-mail address'),
     'amount' => t('Offered donation'),
     'recurring' => t('Recurring'),
     'type' => t('Type'),
+    'address' => t('Address'),
     'created' => t('Created'),
   );
   $donors = array();
   $currencies = simpledonate_valid_currencies();
   foreach ($data as $donor) {
     $donors[] = array(
+      'name' => $donor['first_name'] . ' ' . $donor['last_name'],
       'email' => $donor['email'],
       'amount' => $currencies[$donor['currency']]['symbol'] . $donor['amount'],
       'recurring' => $donor['recurring'],
       'type' => $donor['type'],
+      'address' => $donor['address'] . ' ' . $donor['city'] . ' ' . $donor['postal_code'],
       'created' => format_date($donor['created']),
     );
   }
